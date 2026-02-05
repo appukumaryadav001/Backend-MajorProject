@@ -4,6 +4,7 @@ import {User} from "../models/user.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import {ApiResponse} from "../utils/apiResponse.js";
 import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
 
 
 const generateAccessAndRefreshTokens = async(userId)=>{
@@ -201,6 +202,8 @@ const refreshAccessToken = asyncHandler(async (req,res)=>{
         throw new ApiError(401,"unauthorized request");
        }
 
+    //  console.log(incomingRefreshToken);
+       
       try {
         const decodedToken =  jwt.verify(incomingRefreshToken,process.env.REFRESH_TOKEN_SECRET);
   
@@ -226,7 +229,7 @@ const refreshAccessToken = asyncHandler(async (req,res)=>{
         .cookie("accessToken",accessToken,options)
         .cookie("refreshToken",newRefreshToken,options)
         .json(
-          ApiResponse(
+          new ApiResponse(
               200,
               {accessToken,refreshToken:newRefreshToken},
               "Access token refreshed"
@@ -334,7 +337,7 @@ const updateCoverImage = asyncHandler(async (req, res)=>{
 
     const user = await User.findByIdAndUpdate(
         req.user?._id,
-        {$set:{coverImage: coverImgae.url}},
+        {$set:{coverImage: coverImage.url}},
         {new:true}
     ).select("-password");
 
@@ -403,6 +406,8 @@ const channel = await User.aggregate([
 ]);
 
 
+
+
 if(!channel?.length){
     throw new ApiError(404,"channel does not exist")
 }
@@ -419,7 +424,7 @@ const getWatchHistory = asyncHandler(async (req,res)=>{
      const user = await User.aggregate([
         {
             $match:{
-                _id:new mongoose.Types.ObjectId(req.user._id)
+                _id: new mongoose.Types.ObjectId(req.user._id)
             }
         },
         {
