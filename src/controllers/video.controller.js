@@ -171,7 +171,7 @@ if(!video){
        updateDetails.thumbnail = thumbnailUpload.url;
     }
 
-
+ 
 
     const updatedVideo = await Video.findByIdAndUpdate(
         videoId,
