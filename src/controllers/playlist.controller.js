@@ -5,7 +5,7 @@ import {ApiError} from "../utils/apiError";
 import {ApiResponse} from "../utils/apiResponse";
 import {asyncHandler} from "../utils/asyncHandler";
 
-const creatPlaylist = asyncHandler(async (req,res)=>{
+const createPlaylist = asyncHandler(async (req,res)=>{
     const {name , description} = req.body;
 
     //TODO : create playlist
@@ -217,7 +217,7 @@ const updatePlaylist = asyncHandler( async (req, res)=>{
 })
 
 export {
-    creatPlaylist,
+    createPlaylist,
     getUserPlaylist,
     getPlaylistById,
     addVideoPlaylist,
